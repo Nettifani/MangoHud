@@ -22,7 +22,7 @@ struct gpu_metrics {
     bool fan_rpm;
 
     gpu_metrics()
-        : load(0), temp(0), junction_temp(0), memory_temp(0),
+        : load(0), temp(0),
           memoryUsed(0.0f), memoryTotal(0.0f), MemClock(0), CoreClock(0),
           powerUsage(0.0f), apu_cpu_power(0.0f), apu_cpu_temp(0),
           is_power_throttled(false), is_current_throttled(false),
