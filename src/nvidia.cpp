@@ -117,7 +117,7 @@ void NVIDIA::get_instant_metrics_nvml(struct gpu_metrics *metrics) {
         if (params->enabled[OVERLAY_PARAM_ENABLED_gpu_power] || (logger && logger->is_active())) {
             unsigned int power;
             nvml.nvmlDeviceGetPowerUsage(device, &power);
-            metrics->powerUsage = power / 1000;
+            metrics->powerUsage = power / 1000.f;
         }
 
         if (params->enabled[OVERLAY_PARAM_ENABLED_throttling_status]) {
