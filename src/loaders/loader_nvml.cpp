@@ -266,6 +266,15 @@ bool libnvml_loader::Load(const std::string& library_name) {
     return false;
   }
 
+#if defined(LIBRARY_LOADER_NVML_H_DLOPEN)
+  nvmlDeviceGetFieldValues =
+      reinterpret_cast<decltype(this->nvmlDeviceGetFieldValues)>(
+          dlsym(library_, "nvmlDeviceGetFieldValues"));
+#endif
+#if defined(LIBRARY_LOADER_NVML_H_DT_NEEDED)
+  nvmlDeviceGetFieldValues = &::nvmlDeviceGetFieldValues;
+#endif
+
   loaded_ = true;
   return true;
 }
@@ -292,4 +301,5 @@ void libnvml_loader::CleanUp(bool unload) {
   nvmlUnitGetHandleByIndex = NULL;
   nvmlDeviceGetFanSpeed = NULL;
   nvmlDeviceGetGraphicsRunningProcesses = NULL;
+  nvmlDeviceGetFieldValues = NULL;
 }

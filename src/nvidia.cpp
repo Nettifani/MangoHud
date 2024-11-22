@@ -95,6 +95,35 @@ void NVIDIA::get_instant_metrics_nvml(struct gpu_metrics *metrics) {
             metrics->temp = temp;
         }
 
+        if (params->enabled[OVERLAY_PARAM_ENABLED_gpu_mem_temp] || (logger && logger->is_active())) {
+            if (nvml.nvmlDeviceGetFieldValues) {
+                nvmlFieldValue_t mem_field{};
+                mem_field.fieldId = NVML_FI_DEV_MEMORY_TEMP;
+                nvml.nvmlDeviceGetFieldValues(device, 1, &mem_field);
+                if (mem_field.nvmlReturn == NVML_SUCCESS) {
+                    switch (mem_field.valueType) {
+                        case NVML_VALUE_TYPE_DOUBLE:
+                            metrics->memory_temp = mem_field.value.dVal;
+                            break;
+                        case NVML_VALUE_TYPE_SIGNED_LONG_LONG:
+                            metrics->memory_temp = mem_field.value.sllVal;
+                            break;
+                        case NVML_VALUE_TYPE_UNSIGNED_LONG_LONG:
+                            metrics->memory_temp = mem_field.value.ullVal;
+                            break;
+                        case NVML_VALUE_TYPE_UNSIGNED_INT:
+                            metrics->memory_temp = mem_field.value.uiVal;
+                            break;
+                        case NVML_VALUE_TYPE_UNSIGNED_LONG:
+                            metrics->memory_temp = mem_field.value.ulVal;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
         if (params->enabled[OVERLAY_PARAM_ENABLED_vram] || (logger && logger->is_active())) {
             struct nvmlMemory_st nvml_memory;
             nvml.nvmlDeviceGetMemoryInfo(device, &nvml_memory);

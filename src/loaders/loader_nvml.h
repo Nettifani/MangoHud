@@ -42,6 +42,7 @@ class libnvml_loader {
   decltype(&::nvmlUnitGetHandleByIndex) nvmlUnitGetHandleByIndex;
   decltype(&::nvmlDeviceGetFanSpeed) nvmlDeviceGetFanSpeed;
   decltype(&::nvmlDeviceGetGraphicsRunningProcesses) nvmlDeviceGetGraphicsRunningProcesses;
+  decltype(&::nvmlDeviceGetFieldValues) nvmlDeviceGetFieldValues;
 
  private:
   void CleanUp(bool unload);
